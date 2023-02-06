@@ -667,6 +667,38 @@ This is still incomplete but the unofficial [Daikin documentation](https://githu
 }
 ```
 
+### Vera EDGE Zwave on-off switch example for a device number 33
+
+```json
+{
+    "accessory": "HttpAdvancedAccessory",
+    "service": "Switch",
+    "name": "My lamp",
+    "forceRefreshDelay": 5,
+    "debug": false,
+    "urls": { 
+        "getOn": {
+            "url": "http://<ip-address>:3480/data_request?id=variableget&DeviceNum=33&serviceId=urn:upnp-org:serviceId:SwitchPower1&Variable=Status"
+        },  
+        "setOn": {
+            "url": "http://<ip-address>:3480/data_request?id=action&output_format=xml&DeviceNum=33&serviceId=urn:upnp-org:serviceId:SwitchPower1&action=SetTarget&newTargetValue={value}",
+            "mappers": [
+                {
+                    "type": "static",
+                    "parameters": {
+                        "mapping": {
+                            "false": "0",
+                            "true": "1"
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}
+```
+
+
 ## Plugin Development
 
 To aid in testing and developing this plugin further I have provided a sample homebridge config. This will allow you to spin a homebridge instance for development that has this plugin already installed.  
